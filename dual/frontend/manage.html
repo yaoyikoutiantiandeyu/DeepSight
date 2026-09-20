@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>深瞳锐巡系统 V1.0</title>
+  <link rel="icon" href="logo.png">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Inter:wght@300;400;600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/manage.css">
+  <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
+</head>
+
+<body>
+  <canvas id="bg-canvas"></canvas>
+  <div class="overlay"></div>
+
+  <div id="dashboard-view">
+    <!-- 头部标题栏 -->
+    <header class="dashboard-header">
+      <div>
+        <div class="logo-small"><i class="fa-solid fa-eye"></i> 深瞳锐巡系统 V1.0</div>
+      </div>
+
+      <div class="header-center">
+        <nav class="top-nav">
+          <a href="index.html" class="nav-tab">
+            <span class="tab-text">监测</span>
+            <div class="bowl-border"></div>
+          </a>
+          <a href="ques.html" class="nav-tab">
+            <span class="tab-text">问答</span>
+            <div class="bowl-border"></div>
+          </a>
+          <a href="#" class="nav-tab active">
+            <span class="tab-text">管理</span>
+            <div class="bowl-border"></div>
+          </a>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <div class="user-info">
+          <div class="user-info">
+            <i class="icon-user"></i> 管理员
+          </div>
+        </div>
+        <div class="user-profile">
+          <a href="login.html" class="logout-btn">
+            <i class="fa-solid fa-power-off"></i>
+            <span>退出登录</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- 左侧tab栏 -->
+    <main class="dashboard-main">
+      <aside class="sidebar">
+        <ul class="sidebar-menu">
+          <li class="sidebar-item active" data-target="user-manage">
+            <i class="icon-users"></i> <span>用户管理</span>
+          </li>
+          <li class="sidebar-item" data-target="region-manage">
+            <i class="icon-region"></i> <span>区域管理</span>
+          </li>
+          <li class="sidebar-item" data-target="intersection-info">
+            <i class="icon-intersection"></i> <span>路口管理</span>
+          </li>
+          <li class="sidebar-item" data-target="device-info">
+            <i class="icon-device"></i> <span>设备管理</span>
+          </li>
+          <li class="sidebar-item" data-target="download-app">
+            <i class="icon-download"></i> <span>下载应用</span>
+          </li>
+        </ul>
+      </aside>
+
+      <!-- 主页面tab栏 -->
+      <section class="content-area">
+        <!-- 用户管理 -->
+        <div class="content-panel active" id="user-manage">
+          <div class="panel-header">
+            <div class="search-group">
+              <input type="text" class="search-input" placeholder="请输入用户名搜索">
+              <button class="btn btn-search">搜索</button>
+            </div>
+            <div class="action-group">
+              <button class="btn btn-action">重置</button>
+              <button class="btn btn-action">批量导出</button>
+              <button class="btn btn-action">批量删除</button>
+            </div>
+          </div>
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th width="50"><input type="checkbox"></th>
+                  <th>id</th>
+                  <th>用户名</th>
+                  <th>账号</th>
+                  <th>头像</th>
+                  <th>创建时间</th>
+                  <th>用户角色</th>
+                  <th width="100">操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td>1215789125101</td>
+                  <td>admin</td>
+                  <td>admin</td>
+                  <td><i class="icon-user avatar-icon" style="color: #ffca28;"></i></td>
+                  <td>2026-03-12 11:45:14</td>
+                  <td><span class="role-tag role-admin">管理员</span></td>
+                  <td>
+                    <button class="btn btn-delete-outline">删除</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td>1215789125102</td>
+                  <td>jack</td>
+                  <td>jack</td>
+                  <td><i class="icon-user avatar-icon" style="color: #42a5f5;"></i></td>
+                  <td>2026-03-20 11:13:13</td>
+                  <td><span class="role-tag role-user">普通用户</span></td>
+                  <td>
+                    <button class="btn btn-delete-outline">删除</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td>1215789125103</td>
+                  <td>zhjzhj</td>
+                  <td>zhjzhj</td>
+                  <td><i class="icon-user avatar-icon" style="color: #66bb6a;"></i></td>
+                  <td>2025-03-28 16:27:42</td>
+                  <td><span class="role-tag role-user">普通用户</span></td>
+                  <td>
+                    <button class="btn btn-delete-outline">删除</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="pagination">
+              <span class="page-num active">1</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 区域管理 -->
+        <div class="content-panel" id="region-manage">
+          <div class="panel-header">
+            <div class="search-group">
+              <input type="text" class="search-input" placeholder="请输入区域名搜索">
+              <button class="btn btn-search">搜索</button>
+            </div>
+            <div class="action-group">
+              <button class="btn btn-action">重置</button>
+              <button class="btn btn-action">批量导出</button>
+              <button class="btn btn-action">新增区域</button>
+            </div>
+          </div>
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th width="50"><input type="checkbox"></th>
+                  <th>id</th>
+                  <th>区域名</th>
+                  <th width="35%">区域描述</th>
+                  <th>创建时间</th>
+                  <th>更新时间</th>
+                  <th width="150">操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td>1</td>
+                  <td>区域-A</td>
+                  <td>位于模拟城市南部，是连接住宅区与商业区的重要交通走廊</td>
+                  <td>2026-03-21 23:12:32</td>
+                  <td>2026-03-21 23:16:38</td>
+                  <td>
+                    <button class="btn btn-edit-outline">更新</button>
+                    <button class="btn btn-delete-outline">删除</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td>2</td>
+                  <td>区域-B</td>
+                  <td>位于模拟城市中心，是城市主要干道交汇的核心交通区域</td>
+                  <td>2026-03-21 23:18:28</td>
+                  <td>2026-03-22 08:32:47</td>
+                  <td>
+                    <button class="btn btn-edit-outline">更新</button>
+                    <button class="btn btn-delete-outline">删除</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td>3</td>
+                  <td>区域-C</td>
+                  <td>位于模拟城市西部，是工业园区与物流通道集中的运输区域</td>
+                  <td>2026-03-23 16:56:23</td>
+                  <td>2026-03-25 19:04:20</td>
+                  <td>
+                    <button class="btn btn-edit-outline">更新</button>
+                    <button class="btn btn-delete-outline">删除</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td>4</td>
+                  <td>区域-D</td>
+                  <td>位于模拟城市东部，高新技术产业开发区核心地带</td>
+                  <td>2026-03-26 10:15:00</td>
+                  <td>2026-03-26 10:15:00</td>
+                  <td>
+                    <button class="btn btn-edit-outline">更新</button>
+                    <button class="btn btn-delete-outline">删除</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td>5</td>
+                  <td>区域-E</td>
+                  <td>城市北部生态旅游及康养示范区，人流量较大</td>
+                  <td>2026-03-27 09:30:15</td>
+                  <td>2026-03-27 14:20:00</td>
+                  <td>
+                    <button class="btn btn-edit-outline">更新</button>
+                    <button class="btn btn-delete-outline">删除</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="pagination">
+              <span class="page-num active">1</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 路口信息 -->
+        <div class="content-panel" id="intersection-info">
+          <div class="panel-header">
+            <div class="search-group">
+              <input type="text" class="search-input" placeholder="请输入路口名搜索">
+              <button class="btn btn-search">搜索</button>
+            </div>
+            <div class="action-group">
+              <button class="btn btn-action">重置</button>
+              <button class="btn btn-action">批量导出</button>
+              <button class="btn btn-action">批量删除</button>
+              <button class="btn btn-action">新增路口</button>
+            </div>
+          </div>
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th width="50"><input type="checkbox"></th>
+                  <th>id</th>
+                  <th>路口名</th>
+                  <th>纬度</th>
+                  <th>经度</th>
+                  <th>路口描述</th>
+                  <th>创建时间</th>
+                  <th>更新时间</th>
+                  <th>所属区域名称</th>
+                  <th width="150">操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td>1001</td>
+                  <td>路口-23</td>
+                  <td>30.67523</td>
+                  <td>104.09568</td>
+                  <td>虚拟路口，连接主要交通干道</td>
+                  <td>2026-03-22 23:12:32</td>
+                  <td>2026-03-22 23:12:32</td>
+                  <td>区域-A</td>
+                  <td>
+                    <button class="btn btn-edit-outline">更新</button>
+                    <button class="btn btn-delete-outline">删除</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td>1002</td>
+                  <td>路口-47</td>
+                  <td>30.58246</td>
+                  <td>104.06543</td>
+                  <td>模拟技术园区交通枢纽</td>
+                  <td>2026-03-23 23:12:32</td>
+                  <td>2026-03-23 23:12:32</td>
+                  <td>区域-B</td>
+                  <td>
+                    <button class="btn btn-edit-outline">更新</button>
+                    <button class="btn btn-delete-outline">删除</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td>1003</td>
+                  <td>路口-88</td>
+                  <td>30.65429</td>
+                  <td>104.08764</td>
+                  <td>物流园区主干道交叉口，货车通行量大</td>
+                  <td>2026-03-24 14:22:10</td>
+                  <td>2026-03-24 15:00:00</td>
+                  <td>区域-C</td>
+                  <td>
+                    <button class="btn btn-edit-outline">更新</button>
+                    <button class="btn btn-delete-outline">删除</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td>1004</td>
+                  <td>路口-56</td>
+                  <td>30.63128</td>
+                  <td>104.04897</td>
+                  <td>高新东区科技大道核心控制节点</td>
+                  <td>2026-03-26 11:20:05</td>
+                  <td>2026-03-26 11:20:05</td>
+                  <td>区域-D</td>
+                  <td>
+                    <button class="btn btn-edit-outline">更新</button>
+                    <button class="btn btn-delete-outline">删除</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td>1005</td>
+                  <td>路口-34</td>
+                  <td>30.65782</td>
+                  <td>104.06235</td>
+                  <td>北部生态走廊景区入口交汇处</td>
+                  <td>2026-03-27 10:05:30</td>
+                  <td>2026-03-28 09:12:45</td>
+                  <td>区域-E</td>
+                  <td>
+                    <button class="btn btn-edit-outline">更新</button>
+                    <button class="btn btn-delete-outline">删除</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="pagination">
+              <span class="page-num active">1</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 设备信息 -->
+        <div class="content-panel" id="device-info">
+          <div class="panel-header">
+            <div class="search-group">
+              <input type="text" class="search-input" placeholder="请输入设备名搜索">
+              <button class="btn btn-search">搜索</button>
+            </div>
+            <div class="action-group">
+              <button class="btn btn-action">重置</button>
+              <button class="btn btn-action">批量导出</button>
+              <button class="btn btn-action">批量删除</button>
+              <button class="btn btn-action">新增设备</button>
+            </div>
+          </div>
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th width="50"><input type="checkbox"></th>
+                  <th>id</th>
+                  <th>设备名</th>
+                  <th>创建时间</th>
+                  <th>更新时间</th>
+                  <th>所属路口名称</th>
+                  <th>所属区域名称</th>
+                  <th width="150">操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td>1</td>
+                  <td>智能设备-001</td>
+                  <td>2026-03-22 23:12:36</td>
+                  <td>2026-03-22 23:12:36</td>
+                  <td>路口-23</td>
+                  <td>区域-A</td>
+                  <td>
+                    <button class="btn btn-edit-outline">更新</button>
+                    <button class="btn btn-delete-outline">删除</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td>2</td>
+                  <td>智能设备-002</td>
+                  <td>2026-03-23 23:12:36</td>
+                  <td>2026-03-23 23:12:36</td>
+                  <td>路口-47</td>
+                  <td>区域-B</td>
+                  <td>
+                    <button class="btn btn-edit-outline">更新</button>
+                    <button class="btn btn-delete-outline">删除</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td>3</td>
+                  <td>智能设备-003</td>
+                  <td>2026-03-26 23:12:36</td>
+                  <td>2026-03-26 23:12:36</td>
+                  <td>路口-88</td>
+                  <td>区域-C</td>
+                  <td>
+                    <button class="btn btn-edit-outline">更新</button>
+                    <button class="btn btn-delete-outline">删除</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td>4</td>
+                  <td>智能设备-004</td>
+                  <td>2026-03-27 10:15:20</td>
+                  <td>2026-03-27 10:15:20</td>
+                  <td>路口-56</td>
+                  <td>区域-D</td>
+                  <td>
+                    <button class="btn btn-edit-outline">更新</button>
+                    <button class="btn btn-delete-outline">删除</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td>5</td>
+                  <td>智能设备-005</td>
+                  <td>2026-03-28 14:30:00</td>
+                  <td>2026-03-28 15:45:12</td>
+                  <td>路口-34</td>
+                  <td>区域-E</td>
+                  <td>
+                    <button class="btn btn-edit-outline">更新</button>
+                    <button class="btn btn-delete-outline">删除</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td>6</td>
+                  <td>智能设备-006</td>
+                  <td>2026-03-29 08:20:10</td>
+                  <td>2026-03-29 08:20:10</td>
+                  <td>路口-23</td>
+                  <td>区域-A</td>
+                  <td>
+                    <button class="btn btn-edit-outline">更新</button>
+                    <button class="btn btn-delete-outline">删除</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="pagination">
+              <span class="page-num active">1</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="content-panel" id="download-app">
+        </div>
+      </section>
+    </main>
+
+    <!-- 添加更新操作页面 -->
+    <div id="common-modal" class="modal-overlay" style="display: none;">
+      <div class="modal-wrapper">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 id="modal-title">标题</h3>
+          </div>
+          <div class="modal-body">
+            <div id="modal-id-display" class="modal-info-text" style="display: none;"></div>
+            <div id="modal-form-container"></div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-modal-cancel" id="btn-modal-cancel">取消</button>
+            <button class="btn btn-modal-confirm" id="btn-modal-confirm">确认</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="js/manage.js"></script>
+</body>
+
+</html>

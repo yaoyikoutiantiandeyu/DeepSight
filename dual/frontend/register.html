@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>注册账号 - 深瞳锐巡系统</title>
+  <link rel="icon" href="logo.png">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Inter:wght@300;400;600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/register.css">
+</head>
+
+<body>
+  <canvas id="bg-canvas"></canvas>
+  <div class="overlay"></div>
+
+  <div id="register-view" class="view-container active">
+    <div class="login-box">
+      <div class="login-header">
+        <div class="logo-icon"><i class="fa-solid fa-user-plus"></i></div>
+        <h1>注册账号</h1>
+        <p class="subtitle">REGISTER ACCOUNT</p>
+      </div>
+      <form id="register-form">
+        <div class="input-group">
+          <i class="fa-solid fa-user"></i>
+          <input type="text" id="username" placeholder="请输入用户名/工号" required autocomplete="off">
+          <div class="validation-message" id="username-msg"></div>
+        </div>
+
+        <div class="input-group">
+          <i class="fa-solid fa-lock"></i>
+          <input type="password" id="password" class="password-field" placeholder="请输入密码" required>
+          <span class="icon-eye-toggle" data-target="password"></span>
+          <div class="validation-message" id="password-msg"></div>
+        </div>
+
+        <div class="input-group">
+          <i class="fa-solid fa-lock"></i>
+          <input type="password" id="confirm-password" class="password-field" placeholder="请再次输入密码" required>
+          <span class="icon-eye-toggle" data-target="confirm-password"></span>
+          <div class="validation-message" id="confirm-password-msg"></div>
+        </div>
+
+        <button type="submit" class="btn-primary">
+          <span class="btn-text">注册</span>
+          <span class="btn-glitch"></span>
+        </button>
+      </form>
+      <div class="login-footer">
+        <div class="footer-center">
+          已有帐号？前往<a href="login.html" class="link-register">登录</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/register.js"></script>
+</body>
+
+</html>

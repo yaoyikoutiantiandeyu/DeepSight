@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>深瞳锐巡系统 V1.0</title>
+  <link rel="icon" href="logo.png">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Inter:wght@300;400;600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/ques.css">
+</head>
+
+<body>
+  <canvas id="bg-canvas"></canvas>
+  <div class="overlay"></div>
+
+  <div id="dashboard-view">
+    <!-- 头部标题栏 -->
+    <header class="dashboard-header">
+      <div>
+        <div class="logo-small"><i class="fa-solid fa-eye"></i> 深瞳锐巡系统 V1.0</div>
+      </div>
+
+      <div class="header-center">
+        <nav class="top-nav">
+          <a href="index.html" class="nav-tab">
+            <span class="tab-text">监测</span>
+            <div class="bowl-border"></div>
+          </a>
+          <a href="#" class="nav-tab active">
+            <span class="tab-text">问答</span>
+            <div class="bowl-border"></div>
+          </a>
+          <a href="manage.html" class="nav-tab">
+            <span class="tab-text">管理</span>
+            <div class="bowl-border"></div>
+          </a>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <div class="user-info">
+          <div class="user-info">
+            <i class="icon-user"></i> 管理员
+          </div>
+        </div>
+        <div class="user-profile">
+          <a href="login.html" class="logout-btn">
+            <i class="fa-solid fa-power-off"></i>
+            <span>退出登录</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- 主内容 -->
+    <main class="dashboard-main">
+      <div class="ai-w">
+        <!-- 左侧信息栏 -->
+        <div class="ai-left">
+          <div class="head" id="new-chat-btn">发 起 新 对 话</div>
+          <div class="chat-title">历史记录</div>
+          <ul id="chat-list">
+            <!-- <li>测试1
+              <div class="icon"></div>
+              <div class="icon"></div>
+            </li> -->
+          </ul>
+        </div>
+
+        <div class="ai-right">
+          <!-- 右侧对话栏 -->
+          <div class="content" id="chat-content">
+            <!-- <div class="reply_talk">
+              <div class="reply_info">
+                <span class="reply_font"></span>
+                <span class="reply_time">当前时间</span>
+              </div>
+              <div class="reply_text">Why so serious</div>
+            </div> -->
+          </div>
+
+          <!-- 右下侧工具栏 -->
+          <div class="wrapper">
+            <div class="function">
+              <div class="icon-row">
+                <span class="func-icon i-1" title="清空对话"></span>
+                <span class="func-icon i-2" title="上传红外图"></span>
+              </div>
+              <div class="icon-row">
+                <span class="func-icon i-3" title="语音识别"></span>
+                <span class="func-icon i-4" title="上传可见光图"></span>
+              </div>
+              <div class="file-box" id="file-box" style="visibility: hidden;"></div>
+              <input type="file" id="image-upload" accept="image/*" style="display: none;">
+              <input type="file" id="image-upload-ir" accept="image/*" style="display: none;">
+            </div>
+
+            <!-- 右下侧对话栏 -->
+            <div class="input-area">
+              <textarea id="tx" placeholder="给 深瞳锐巡 发送消息" maxlength="1000"></textarea>
+              <div class="action-bar">
+                <span class="total">0/1000字</span>
+                <button id="submit-btn" class="unchecked">发 布</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+  </div>
+
+  <script src="js/ques.js?v=20260317-1"></script>
+</body>
+
+</html>

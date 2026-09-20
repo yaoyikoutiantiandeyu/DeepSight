@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>深瞳锐巡系统 V1.0</title>
+  <link rel="icon" href="logo.png">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Inter:wght@300;400;600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
+  <link rel="stylesheet" href="css/index.css">
+</head>
+
+<body>
+  <canvas id="bg-canvas"></canvas>
+  <div class="overlay"></div>
+
+  <!-- 头部导航栏 -->
+  <div id="dashboard-view">
+    <header class="dashboard-header">
+      <div>
+        <div class="logo-small"><i class="fa-solid fa-eye"></i> 深瞳锐巡系统 V1.0</div>
+      </div>
+      <div class="header-center">
+        <nav class="top-nav">
+          <a href="#" class="nav-tab active"><span class="tab-text">监测</span>
+            <div class="bowl-border"></div>
+          </a>
+          <a href="ques.html" class="nav-tab"><span class="tab-text">问答</span>
+            <div class="bowl-border"></div>
+          </a>
+          <a href="manage.html" class="nav-tab"><span class="tab-text">管理</span>
+            <div class="bowl-border"></div>
+          </a>
+        </nav>
+      </div>
+      <div class="header-right">
+        <div class="user-info">
+          <i class="icon-user"></i> 管理员
+        </div>
+        <div class="user-profile">
+          <a href="login.html" class="logout-btn">
+            <i class="fa-solid fa-power-off"></i>
+            <span>退出登录</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main class="dashboard-main">
+      <!-- 左栏 -->
+      <aside class="data-panel">
+        <!-- 左栏上 -->
+        <div class="panel-card alert-card">
+          <div class="panel-header">
+            <h3><i class="fa-solid fa-bell"></i> 实时告警</h3>
+          </div>
+          <div class="alert-list">
+            <div class="alert-item">
+              <div class="alert-icon siren"><i class="fa-solid fa-lightbulb"></i></div><span
+                class="alert-text">发生交通事故</span><span class="alert-status safe">无</span>
+            </div>
+            <div class="alert-item">
+              <div class="alert-icon warning"><i class="fa-solid fa-triangle-exclamation"></i></div><span
+                class="alert-text">存在车辆违法行为</span><span class="alert-status safe">无</span>
+            </div>
+            <div class="alert-item">
+              <div class="alert-icon bus"><i class="fa-solid fa-car-burst"></i></div><span
+                class="alert-text">道路拥堵</span><span class="alert-status safe">无</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 左栏中 -->
+        <div class="panel-card road-cond-card">
+          <div class="panel-header">
+            <h3><i class="fa-solid fa-road"></i> 道路状况</h3>
+          </div>
+          <div class="road-cond-container">
+            <div class="center-graphic"><i class="fa-solid fa-street-view"></i></div>
+            <div class="cond-grid">
+              <div class="cond-item"><span class="cond-label">存在道路裂缝</span>
+                <div class="dashed-divider"></div><span class="cond-val safe">无</span>
+              </div>
+              <div class="cond-item"><span class="cond-label">存在道路坑槽</span>
+                <div class="dashed-divider"></div><span class="cond-val safe">无</span>
+              </div>
+              <div class="cond-item"><span class="cond-label">存在道路抛洒物</span>
+                <div class="dashed-divider"></div><span class="cond-val safe">无</span>
+              </div>
+              <div class="cond-item"><span class="cond-label">存在道路标志线损坏</span>
+                <div class="dashed-divider"></div><span class="cond-val safe">无</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 左栏下 -->
+        <div class="panel-card device-info-card">
+          <div class="panel-header">
+            <h3><i class="fa-solid fa-list-ul"></i> 检测设备实时信息</h3>
+          </div>
+          <div class="table-wrapper">
+            <table class="custom-table">
+              <thead>
+                <tr>
+                  <th>设备ID</th>
+                  <th>设备名称</th>
+                  <th>区域名</th>
+                  <th>路口ID</th>
+                  <th>路口名称</th>
+                </tr>
+              </thead>
+            </table>
+            <div class="scroll-container">
+              <div class="scroll-tbody-wrap">
+                <table class="custom-table">
+                  <tbody id="scroll-tbody">
+                    <tr>
+                      <td>01</td>
+                      <td>智能摄像头-A001</td>
+                      <td>朝阳区</td>
+                      <td>1001</td>
+                      <td>建国门外路口</td>
+                    </tr>
+                    <tr>
+                      <td>02</td>
+                      <td>智能摄像头-A002</td>
+                      <td>海淀区</td>
+                      <td>1002</td>
+                      <td>中关村大街路口</td>
+                    </tr>
+                    <tr>
+                      <td>03</td>
+                      <td>智能摄像头-A003</td>
+                      <td>东城区</td>
+                      <td>1003</td>
+                      <td>王府井大街路口</td>
+                    </tr>
+                    <tr>
+                      <td>04</td>
+                      <td>智能摄像头-A004</td>
+                      <td>西城区</td>
+                      <td>1004</td>
+                      <td>西单北大街路口</td>
+                    </tr>
+                    <tr>
+                      <td>05</td>
+                      <td>智能摄像头-A005</td>
+                      <td>丰台区</td>
+                      <td>1005</td>
+                      <td>六里桥南路口</td>
+                    </tr>
+                    <tr>
+                      <td>06</td>
+                      <td>智能摄像头-A006</td>
+                      <td>浦东区</td>
+                      <td>1006</td>
+                      <td>世纪大道干路口</td>
+                    </tr>
+                    <tr>
+                      <td>07</td>
+                      <td>智能摄像头-A007</td>
+                      <td>徐汇区</td>
+                      <td>1007</td>
+                      <td>肇嘉浜路口</td>
+                    </tr>
+                    <tr>
+                      <td>08</td>
+                      <td>智能摄像头-A008</td>
+                      <td>黄浦区</td>
+                      <td>1008</td>
+                      <td>南京东路口</td>
+                    </tr>
+                    <tr>
+                      <td>09</td>
+                      <td>智能摄像头-A009</td>
+                      <td>静安区</td>
+                      <td>1009</td>
+                      <td>静安寺十字路口</td>
+                    </tr>
+                    <tr>
+                      <td>10</td>
+                      <td>智能摄像头-A010</td>
+                      <td>南山区</td>
+                      <td>1010</td>
+                      <td>深南大道西路口</td>
+                    </tr>
+                    <tr>
+                      <td>11</td>
+                      <td>智能摄像头-A011</td>
+                      <td>福田区</td>
+                      <td>1011</td>
+                      <td>华强北十字路口</td>
+                    </tr>
+                    <tr>
+                      <td>12</td>
+                      <td>智能摄像头-A012</td>
+                      <td>罗湖区</td>
+                      <td>1012</td>
+                      <td>东门老街路口</td>
+                    </tr>
+                    <tr>
+                      <td>13</td>
+                      <td>智能摄像头-A013</td>
+                      <td>天河区</td>
+                      <td>1013</td>
+                      <td>天河城十字路口</td>
+                    </tr>
+                    <tr>
+                      <td>14</td>
+                      <td>智能摄像头-A014</td>
+                      <td>越秀区</td>
+                      <td>1014</td>
+                      <td>步行街路口</td>
+                    </tr>
+                    <tr>
+                      <td>15</td>
+                      <td>智能摄像头-A015</td>
+                      <td>锦江区</td>
+                      <td>1015</td>
+                      <td>春熙路十字路口</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- 中栏 -->
+      <section class="modules-section">
+        <!-- tab栏切换 -->
+        <div class="sub-header">
+          <ul class="sub-nav-list">
+            <li class="sub-tab active" data-target="live-card">
+              <span class="tab-content"><i class="icon-aerial"></i> 实时航拍检测</span>
+            </li>
+            <li class="sub-tab" data-target="video-card">
+              <span class="tab-content"><i class="icon-video"></i> 视频检测</span>
+            </li>
+            <li class="sub-tab" data-target="image-card">
+              <span class="tab-content"><i class="icon-image"></i> 图片检测</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- f1 实时航拍检测 -->
+        <div class="module-card live-card active-panel">
+          <div class="card-header">
+            <h3><i class="fa-solid fa-plane-up"></i> 实时航拍检测</h3>
+          </div>
+
+          <div class="live-grid">
+            <div class="live-item">
+              <div class="live-box" data-id="1">
+                <span class="modality-label">当前: 可见光</span>
+                <button class="switch-btn">切换模态</button>
+                <div class="empty-text"><i class="fa-solid fa-plus"></i> 点击选择航拍源</div>
+                <video class="live-video" muted playsinline></video>
+                <input type="file" class="live-upload-input" accept="video/*" style="display: none;">
+              </div>
+              <div class="live-controls">
+                <button class="change-source-btn" disabled>切换航拍源</button>
+                <button class="delete-source-btn" disabled>删除航拍源</button>
+              </div>
+            </div>
+            <div class="live-item">
+              <div class="live-box" data-id="2">
+                <span class="modality-label">当前: 可见光</span>
+                <button class="switch-btn">切换模态</button>
+                <div class="empty-text"><i class="fa-solid fa-plus"></i> 点击选择航拍源</div>
+                <video class="live-video" muted playsinline></video>
+                <input type="file" class="live-upload-input" accept="video/*" style="display: none;">
+              </div>
+              <div class="live-controls">
+                <button class="change-source-btn" disabled>切换航拍源</button>
+                <button class="delete-source-btn" disabled>删除航拍源</button>
+              </div>
+            </div>
+            <div class="live-item">
+              <div class="live-box" data-id="3">
+                <span class="modality-label">当前: 可见光</span>
+                <button class="switch-btn">切换模态</button>
+                <div class="empty-text"><i class="fa-solid fa-plus"></i> 点击选择航拍源</div>
+                <video class="live-video" muted playsinline></video>
+                <input type="file" class="live-upload-input" accept="video/*" style="display: none;">
+              </div>
+              <div class="live-controls">
+                <button class="change-source-btn" disabled>切换航拍源</button>
+                <button class="delete-source-btn" disabled>删除航拍源</button>
+              </div>
+            </div>
+            <div class="live-item">
+              <div class="live-box" data-id="4">
+                <span class="modality-label">当前: 可见光</span>
+                <button class="switch-btn">切换模态</button>
+                <div class="empty-text"><i class="fa-solid fa-plus"></i> 点击选择航拍源</div>
+                <video class="live-video" muted playsinline></video>
+                <input type="file" class="live-upload-input" accept="video/*" style="display: none;">
+              </div>
+              <div class="live-controls">
+                <button class="change-source-btn" disabled>切换航拍源</button>
+                <button class="delete-source-btn" disabled>删除航拍源</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- f2 视频检测 -->
+        <div class="module-card video-card">
+          <div class="card-header">
+            <h3><i class="fa-solid fa-video"></i> 视频检测</h3>
+          </div>
+
+          <div class="card-preview dual-video-preview">
+            <input type="file" id="video-upload-input-video" accept="video/*" style="display: none">
+
+            <div class="grid-subtitle rgb-title">可见光成像</div>
+            <div class="grid-subtitle ir-title">红外成像</div>
+
+            <div class="video-box original-visible" id="top-left-box-video">
+              <div class="video-content empty-state" id="upload-trigger-video">
+                <div class="upload-text">上传可见光视频</div>
+              </div>
+            </div>
+            <div class="video-box original-infrared" id="top-right-box-video">
+              <input type="file" id="video-upload-input-video-ir" accept="video/*" style="display:none;">
+              <div class="video-content empty-state" id="upload-trigger-video-ir">
+                <div class="upload-text">上传红外视频</div>
+              </div>
+            </div>
+
+            <div class="video-box processed-visible" id="bottom-left-box-video"></div>
+            <div class="video-box processed-infrared" id="bottom-right-box-video"></div>
+          </div>
+
+          <div class="card-stats">
+            <div><button class="start-detect-btn" id="start-video-btn" disabled><i
+                  style="font-family: 'icomoon'; font-style: normal;">&#xea1c;</i> 开始检测</button></div>
+
+            <div class="stat-item"><span class="label">帧率</span><span class="value">0</span></div>
+            <div class="stat-item"><span class="label">识别目标数</span><span class="value">0</span></div>
+            <div class="stat-item"><span class="label">内存占用</span><span class="value">0%</span></div>
+
+            <div><button class="delete-video-btn"><i style="font-family: 'icomoon'; font-style: normal;">&#xe9ac;</i>
+                删除上传视频</button></div>
+          </div>
+        </div>
+
+        <!-- f3 图像检测 -->
+        <div class="module-card image-card">
+          <div class="card-header">
+            <h3><i class="fa-solid fa-image"></i> 图片检测</h3>
+          </div>
+
+          <div class="card-preview dual-video-preview">
+            <input type="file" id="video-upload-input-image" accept="image/*" style="display: none">
+
+            <div class="grid-subtitle rgb-title">可见光成像</div>
+            <div class="grid-subtitle ir-title">红外成像</div>
+
+            <div class="video-box original-visible" id="top-left-box-image">
+              <div class="video-content empty-state" id="upload-trigger-image">
+                <div class="upload-text">上传可见光图片</div>
+              </div>
+            </div>
+            <div class="video-box original-infrared" id="top-right-box-image">
+              <input type="file" id="image-upload-input-image-ir" accept="image/*" style="display:none;">
+              <div class="video-content empty-state" id="upload-trigger-image-ir">
+                <div class="upload-text">上传红外图片</div>
+              </div>
+            </div>
+
+            <div class="video-box processed-visible" id="bottom-left-box-image"></div>
+            <div class="video-box processed-infrared" id="bottom-right-box-image"></div>
+          </div>
+
+          <div class="card-stats">
+            <div><button class="start-detect-btn" id="start-image-btn" disabled><i
+                  style="font-family: 'icomoon'; font-style: normal;">&#xea1c;</i> 开始检测</button></div>
+
+            <div class="stat-item"><span class="label">分辨率</span><span class="value">-</span></div>
+            <div class="stat-item"><span class="label">识别目标数</span><span class="value">0</span></div>
+            <div class="stat-item"><span class="label">检测用时</span><span class="value">0ms</span></div>
+
+            <div><button class="delete-video-btn"><i style="font-family: 'icomoon'; font-style: normal;">&#xe9ac;</i>
+                删除上传图片</button></div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- 下栏 -->
+      <aside class="data-panel">
+        <!-- 下栏上 -->
+        <div class="panel-card vehicle-total-card">
+          <div class="panel-header">
+            <h3><i class="fa-solid fa-car"></i> 车辆总计</h3>
+          </div>
+
+          <div class="vehicle-total-body">
+            <div class="holo-graphic">
+              <div class="holo-cam"><i class="fa-solid fa-video"></i></div>
+              <div class="holo-beam"></div>
+              <div class="holo-base"></div>
+            </div>
+
+            <div class="vehicle-stats">
+              <div class="stat-row">
+                <div class="stat-title"><i class="fa-solid fa-chevron-right"></i> 本日累计监测车辆</div>
+                <div class="stat-num num-cyan">0</div>
+              </div>
+              <div class="stat-row">
+                <div class="stat-title"><i class="fa-solid fa-chevron-right"></i> 昨日累计监测车辆</div>
+                <div class="stat-num num-green">0</div>
+              </div>
+              <div class="stat-row">
+                <div class="stat-title"><i class="fa-solid fa-chevron-right"></i> 近七日累计监测车辆</div>
+                <div class="stat-num num-yellow">128275</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 下栏中 -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <h3><i class="fa-solid fa-bars-progress"></i> 实时车辆分析</h3>
+          </div>
+          <div class="progress-container" id="progress-list"></div>
+        </div>
+
+        <!-- 下栏下 -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <h3><i class="fa-solid fa-chart-pie"></i> 车辆类型占比</h3>
+          </div>
+          <div class="chart-container" id="pie-chart"></div>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <script src="js/index.js?v=20260321_5"></script>
+</body>
+
+</html>
